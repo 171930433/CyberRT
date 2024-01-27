@@ -32,6 +32,7 @@ for entry in "${mainboard_path}" \
     "${channel_path}" "${node_path}" \
     "${service_path}" \
     "${launch_path}" \
+    "${bazel_bin_path}" \
     "${visualizer_path}" ; do
     export PATH="${entry}":$PATH
 done
@@ -43,4 +44,4 @@ export sysmo_start=0
 export CYBER_DOMAIN_ID=80
 export CYBER_IP=127.0.0.1
 
-# source ${_SETUP_PATH}/cyber_tools_auto_complete.bash
+source ${BUILD_PATH}/cyber_tools_auto_complete.bash
