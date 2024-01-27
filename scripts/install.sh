@@ -15,7 +15,7 @@ function download() {
     echo ""
   else
     echo "############### Install $LIB_NAME $URL ################"
-    git clone $URL "$DOWNLOAD_PATH"
+    # git clone $URL "$DOWNLOAD_PATH"
   fi
 }
 

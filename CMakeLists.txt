@@ -87,7 +87,7 @@ include_directories(
 link_directories(${DEPENCENCY_LIB_DIRS})
 
 file(GLOB CYBER_PROTO_FILES
-  "${CMAKE_CURRENT_SOURCE_DIR}/modules/common_msgs/**/*.proto"
+  # "${CMAKE_CURRENT_SOURCE_DIR}/modules/common_msgs/**/*.proto"
   "${CMAKE_CURRENT_SOURCE_DIR}/cyber/proto/*.proto"
   "${CMAKE_CURRENT_SOURCE_DIR}/cyber/examples/proto/*.proto"
 )
@@ -115,8 +115,8 @@ file(GLOB CYBER_PROTO_SRCS
     "cyber/proto/*.pb.h"
     "cyber/examples/proto/*.pb.cc"
     "cyber/examples/proto/*.pb.h"
-    "modules/common_msgs/**/*.pb.cc"
-    "modules/common_msgs/**/*.pb.h"
+    # "modules/common_msgs/**/*.pb.cc"
+    # "modules/common_msgs/**/*.pb.h"
 )
 
 file(GLOB CYBER_SRCS
