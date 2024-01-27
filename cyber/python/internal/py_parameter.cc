@@ -19,6 +19,7 @@
 #include <set>
 #include <string>
 
+#define PY_SSIZE_T_CLEAN 
 #include <Python.h>
 #include "cyber/python/internal/py_cyber.h"
 

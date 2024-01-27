@@ -13,6 +13,7 @@ third_party/
 install/
 *.db
 install/
+wsl2_ubuntu2204/
 
 __pycache__
 log/*
