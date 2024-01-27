@@ -42,5 +42,6 @@ export sysmo_start=0
 export CYBER_DOMAIN_ID=80
 export CYBER_IP=127.0.0.1
 
-source ${CYBER_PATH}/tools/cyber_tools_auto_complete.bash
+# source ${_SETUP_PATH}/cyber_tools_auto_complete.bash
+
 
