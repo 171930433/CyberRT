@@ -1,0 +1,13 @@
+dependency_include_dirs=/home/gsk/pro/CyberRT/install/include;/home/gsk/pro/CyberRT/install/include;/home/gsk/pro/CyberRT/install/include;/usr/include/python3.6m;/usr/include/x86_64-linux-gnu/python3.6m;/usr/include/uuid;/home/gsk/pro/CyberRT/install/include;/home/gsk/pro/CyberRT/install/include
+dependency_lib_dirs=/home/gsk/pro/CyberRT/install/lib;/home/gsk/pro/CyberRT/install/lib;/home/gsk/pro/CyberRT/install/lib
+prefix=/home/gsk/pro/CyberRT/install
+exec_prefix=${prefix}
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: cyber
+Description: generic cyber library
+Version: 8.0.0
+Requires:
+Libs: -L${libdir} -L${dependency_lib_dirs} -lcyber -lglog;gflags
+Cflags: -I${includedir} -I${dependency_include_dirs}
