@@ -14,7 +14,7 @@ install/
 *.db
 install/
 wsl2_ubuntu2204/
-wsl2_ubuntu1804/
+# wsl2_ubuntu1804/
 
 __pycache__
 log/*
