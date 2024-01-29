@@ -149,10 +149,10 @@ function build_gfamily() {
 function main() {
   echo "############### Install Third Party. ################"
   init
-  build_setup
-  build_nlohmann_json
-  build_tinyxml2
-  build_gfamily
+  # build_setup
+  # build_nlohmann_json
+  # build_tinyxml2
+  # build_gfamily
   build_fastdds
   return
 }
