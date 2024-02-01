@@ -143,14 +143,86 @@ function build_gfamily() {
   popd
 }
 
+function build_eigen3()
+{
+  echo "############### Build eigen Libs. ################"
+  download "https://gitlab.com/libeigen/eigen.git" "eigen"
+
+  pushd "$CURRENT_PATH/../third_party/eigen/"
+  git checkout 3.4
+  mkdir -p build && cd build
+  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX ..
+  make install -j$(nproc)
+  popd
+}
+
+function build_boost()
+{
+  echo "############### Build boost Libs. download may slowly ################"
+  local INSTALL_PATH="$CURRENT_PATH/../third_party/"
+
+  PKG_NAME="boost_1_84_0.tar.gz"
+  DOWNLOAD_LINK="https://boostorg.jfrog.io/artifactory/main/release/1.84.0/source/boost_1_84_0.tar.gz"
+  wget -t 10 $DOWNLOAD_LINK -P $INSTALL_PATH
+
+  
+  pushd $INSTALL_PATH
+  tar -zxf ${PKG_NAME}
+  cd boost_1_84_0
+  ./bootstrap.sh --prefix=$INSTALL_PREFIX
+  ./b2 install
+  popd
+
+}
+
+
+function build_atlas()
+{
+  echo "############### Build ceres_solver depends Libs. download may slowly ################"
+  local INSTALL_PATH="$CURRENT_PATH/../third_party/"
+
+  NAME="ATLAS"
+  PKG_NAME="atlas3.10.3.tar.bz2"
+  DOWNLOAD_LINK="http://sourceforge.net/projects/math-atlas/files/Stable/3.10.3/atlas3.10.3.tar.bz2"
+  # wget -t 10 $DOWNLOAD_LINK -P $INSTALL_PATH
+
+  
+  pushd $INSTALL_PATH
+  # tar -xvf ${PKG_NAME} 
+  cd $NAME && mkdir -p build && cd build
+
+  ../configure --shared --prefix=$INSTALL_PREFIX
+  make -j$(nproc)
+  make install 
+
+  popd
+
+}
+
+function build_ceres() {
+  echo "############### Build ceres_solver. ################"
+  # build_atlas
+  # local NAME="ceres-solver"
+  # download "git@github.com:ceres-solver/ceres-solver.git" "$NAME"
+  # pushd "$CURRENT_PATH/../third_party/$NAME/"
+  # git checkout 2.0.0
+  # mkdir -p build && cd build
+  # cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON ..
+  # make install -j$(nproc)
+  # popd
+}
+
 function main() {
   echo "############### Install Third Party. ################"
   init
-  build_setup
-  build_nlohmann_json
-  build_tinyxml2
-  build_gfamily
-  build_fastdds
+  # build_setup
+  # build_nlohmann_json
+  # build_tinyxml2
+  # build_gfamily
+  # build_fastdds
+  # build_eigen3
+  # build_boost
+  build_ceres
   return
 }
 
