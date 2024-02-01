@@ -66,38 +66,35 @@ function build_tinyxml2() {
 
 function build_fastdds() {
   echo "############### Build Fast-DDS. ################"
-  # download "https://github.com/eProsima/Fast-RTPS.git" "Fast-RTPS"
-  # pushd "$CURRENT_PATH/../third_party/Fast-RTPS/"
-  # git checkout v1.5.0
-  # git submodule update --init
-  # patch -p1 < "$CURRENT_PATH/../scripts/FastRTPS_1.5.0.patch"
-  # mkdir -p build && cd build
-  # cmake -DEPROSIMA_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/home/trunk/work/code/github/CyberRT/third_party/Fast-RTPS/build/external/install ..
-  # make -j$(nproc)
-  # make install
-  # cmake -DEPROSIMA_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX ..
-  # make -j$(nproc)
-  # make install
-  # popd
-
-  local INSTALL_PATH="$CURRENT_PATH/../third_party/"
-  if [[ "${ARCH}" == "x86_64" ]]; then
-    PKG_NAME="fast-rtps-1.5.0-1.prebuilt.x86_64.tar.gz"
-  else # aarch64
-    PKG_NAME="fast-rtps-1.5.0-1.prebuilt.aarch64.tar.gz"
-  fi
-  DOWNLOAD_LINK="https://apollo-system.cdn.bcebos.com/archive/6.0/${PKG_NAME}"
-  if [ -e $INSTALL_PATH/$PKG_NAME ]
-  then
-    echo ""
-  else
-    wget -t 10 $DOWNLOAD_LINK -P $INSTALL_PATH
-  fi
-  pushd $INSTALL_PATH
-  tar -zxf ${PKG_NAME}
-  cp -r fast-rtps-1.5.0-1/* ../install
-  rm -rf fast-rtps-1.5.0-1
+  download "https://github.com/eProsima/Fast-RTPS.git" "Fast-RTPS"
+  pushd "$CURRENT_PATH/../third_party/Fast-RTPS/"
+  git checkout v1.5.0
+  git submodule update --init
+  patch -p1 < "$CURRENT_PATH/../scripts/FastRTPS_1.5.0.patch"
+  mkdir -p build && cd build
+  cmake -DEPROSIMA_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX ..
+  make -j$(nproc)
+  make install
   popd
+
+  # local INSTALL_PATH="$CURRENT_PATH/../third_party/"
+  # if [[ "${ARCH}" == "x86_64" ]]; then
+  #   PKG_NAME="fast-rtps-1.5.0-1.prebuilt.x86_64.tar.gz"
+  # else # aarch64
+  #   PKG_NAME="fast-rtps-1.5.0-1.prebuilt.aarch64.tar.gz"
+  # fi
+  # DOWNLOAD_LINK="https://apollo-system.cdn.bcebos.com/archive/6.0/${PKG_NAME}"
+  # if [ -e $INSTALL_PATH/$PKG_NAME ]
+  # then
+  #   echo ""
+  # else
+  #   wget -t 10 $DOWNLOAD_LINK -P $INSTALL_PATH
+  # fi
+  # pushd $INSTALL_PATH
+  # tar -zxf ${PKG_NAME}
+  # cp -r fast-rtps-1.5.0-1/* ../install
+  # rm -rf fast-rtps-1.5.0-1
+  # popd
 }
 
 function build_gfamily() {
