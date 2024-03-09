@@ -176,41 +176,65 @@ function build_boost()
 }
 
 
-function build_atlas()
-{
-  echo "############### Build ceres_solver depends Libs. download may slowly ################"
-  local INSTALL_PATH="$CURRENT_PATH/../third_party/"
 
-  NAME="ATLAS"
-  PKG_NAME="atlas3.10.3.tar.bz2"
-  DOWNLOAD_LINK="http://sourceforge.net/projects/math-atlas/files/Stable/3.10.3/atlas3.10.3.tar.bz2"
-  # wget -t 10 $DOWNLOAD_LINK -P $INSTALL_PATH
-
-  
-  pushd $INSTALL_PATH
-  # tar -xvf ${PKG_NAME} 
-  cd $NAME && mkdir -p build && cd build
-
-  ../configure --shared --prefix=$INSTALL_PREFIX
-  make -j$(nproc)
-  make install 
-
-  popd
-
-}
 
 function build_ceres() {
   echo "############### Build ceres_solver. ################"
-  # build_atlas
-  # local NAME="ceres-solver"
-  # download "git@github.com:ceres-solver/ceres-solver.git" "$NAME"
-  # pushd "$CURRENT_PATH/../third_party/$NAME/"
-  # git checkout 2.0.0
-  # mkdir -p build && cd build
-  # cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON ..
-  # make install -j$(nproc)
-  # popd
+  # install atlas
+  sudo apt-get install libatlas-base-dev libsuitesparse-dev -y
+  local NAME="ceres-solver"
+  download "https://github.com/ceres-solver/ceres-solver.git" "$NAME"
+  pushd "$CURRENT_PATH/../third_party/$NAME/"
+  git checkout 2.0.0
+  mkdir -p build && cd build
+  cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON ..
+  make install -j$(nproc)
+  popd
 }
+
+function build_sophus() {
+  echo "############### Build Sophus. ################"
+  local NAME="Sophus"
+  download "https://github.com/strasdat/Sophus.git" "$NAME"
+  pushd "$CURRENT_PATH/../third_party/$NAME/"
+  mkdir -p build && cd build
+  cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON ..
+  make install -j$(nproc)
+  popd
+}
+
+function build_flann() {
+  echo "############### Build pcl-flann. ################"
+  # install liblz4
+  sudo apt-get install liblz4-dev -y
+
+  local NAME="flann"
+  download "https://github.com/flann-lib/flann.git" "$NAME"
+  pushd "$CURRENT_PATH/../third_party/$NAME/"
+  mkdir -p build && cd build
+  cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_MATLAB_BINDINGS=OFF -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DBUILD_DOC=OFF ..
+  make install -j$(nproc)
+  popd
+}
+
+function build_pcl() {
+  # build_flann
+  echo "############### Build pcl. ################"
+  # install liblz4
+  sudo sudo apt-get install libpng-dev libusb-1.0-0-dev freeglut3-dev libopenni-dev  -y
+
+  local NAME="pcl"
+  # download "https://github.com/PointCloudLibrary/pcl.git" "$NAME"
+  pushd "$CURRENT_PATH/../third_party/$NAME/"
+  mkdir -p build && cd build
+  cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON  ..
+  make install -j$(nproc)
+  popd
+}
+
+
+
 
 function main() {
   echo "############### Install Third Party. ################"
@@ -222,7 +246,9 @@ function main() {
   # build_fastdds
   # build_eigen3
   # build_boost
-  build_ceres
+  # build_ceres
+  # build_sophus
+  build_pcl
   return
 }
 
