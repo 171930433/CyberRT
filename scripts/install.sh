@@ -175,9 +175,6 @@ function build_boost()
 
 }
 
-
-
-
 function build_ceres() {
   echo "############### Build ceres_solver. ################"
   # install atlas
@@ -222,10 +219,10 @@ function build_pcl() {
   # build_flann
   echo "############### Build pcl. ################"
   # install liblz4
-  sudo sudo apt-get install libpng-dev libusb-1.0-0-dev freeglut3-dev libopenni-dev  -y
+  sudo sudo apt-get install libpng-dev libpcap-dev libusb-1.0-0-dev freeglut3-dev libopenni-dev  -y
 
   local NAME="pcl"
-  # download "https://github.com/PointCloudLibrary/pcl.git" "$NAME"
+  download "https://github.com/PointCloudLibrary/pcl.git" "$NAME"
   pushd "$CURRENT_PATH/../third_party/$NAME/"
   mkdir -p build && cd build
   cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON  ..
@@ -234,7 +231,17 @@ function build_pcl() {
 }
 
 
-
+function build_opencv() {
+  echo "############### Build opencv. ################"
+  local NAME="opencv"
+  download "https://github.com/opencv/opencv.git" "$NAME"
+  pushd "$CURRENT_PATH/../third_party/$NAME/"
+  git checkout 4.x
+  mkdir -p build && cd build
+  cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON  ..
+  make install -j$(nproc)
+  popd
+}
 
 function main() {
   echo "############### Install Third Party. ################"
@@ -248,7 +255,8 @@ function main() {
   # build_boost
   # build_ceres
   # build_sophus
-  build_pcl
+  # build_pcl
+  # build_opencv
   return
 }
 
