@@ -243,6 +243,21 @@ function build_opencv() {
   popd
 }
 
+function build_pangolin() {
+  echo "############### Build pangolin. ################"
+  sudo apt install libglew-dev -y
+  local NAME="pangolin"
+  download "https://gitee.com/wystephen/Pangolin.git" "$NAME"
+  pushd "$CURRENT_PATH/../third_party/$NAME/"
+  # git checkout 4.x
+  mkdir -p build && cd build
+  cmake -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON  ..
+  make install -j$(nproc)
+  popd
+}
+
+
+
 function main() {
   echo "############### Install Third Party. ################"
   init
@@ -257,6 +272,7 @@ function main() {
   # build_sophus
   # build_pcl
   # build_opencv
+  # build_pangolin
   return
 }
 
