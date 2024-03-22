@@ -233,6 +233,7 @@ function build_pcl() {
 
 function build_opencv() {
   echo "############### Build opencv. ################"
+  sudo apt install libgtk2.0-dev pkg-config -y
   local NAME="opencv"
   download "https://github.com/opencv/opencv.git" "$NAME"
   pushd "$CURRENT_PATH/../third_party/$NAME/"
