@@ -65,36 +65,36 @@ function build_tinyxml2() {
 }
 
 function build_fastdds() {
-  echo "############### Build Fast-DDS. ################"
-  download "https://github.com/eProsima/Fast-RTPS.git" "Fast-RTPS"
-  pushd "$CURRENT_PATH/../third_party/Fast-RTPS/"
-  git checkout v1.5.0
-  git submodule update --init
-  patch -p1 < "$CURRENT_PATH/../scripts/FastRTPS_1.5.0.patch"
-  mkdir -p build && cd build
-  cmake -DEPROSIMA_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX ..
-  make -j$(nproc)
-  make install
-  popd
-
-  # local INSTALL_PATH="$CURRENT_PATH/../third_party/"
-  # if [[ "${ARCH}" == "x86_64" ]]; then
-  #   PKG_NAME="fast-rtps-1.5.0-1.prebuilt.x86_64.tar.gz"
-  # else # aarch64
-  #   PKG_NAME="fast-rtps-1.5.0-1.prebuilt.aarch64.tar.gz"
-  # fi
-  # DOWNLOAD_LINK="https://apollo-system.cdn.bcebos.com/archive/6.0/${PKG_NAME}"
-  # if [ -e $INSTALL_PATH/$PKG_NAME ]
-  # then
-  #   echo ""
-  # else
-  #   wget -t 10 $DOWNLOAD_LINK -P $INSTALL_PATH
-  # fi
-  # pushd $INSTALL_PATH
-  # tar -zxf ${PKG_NAME}
-  # cp -r fast-rtps-1.5.0-1/* ../install
-  # rm -rf fast-rtps-1.5.0-1
+  # echo "############### Build Fast-DDS. ################"
+  # download "https://github.com/eProsima/Fast-RTPS.git" "Fast-RTPS"
+  # pushd "$CURRENT_PATH/../third_party/Fast-RTPS/"
+  # git checkout v1.5.0
+  # git submodule update --init
+  # patch -p1 < "$CURRENT_PATH/../scripts/FastRTPS_1.5.0.patch"
+  # mkdir -p build && cd build
+  # cmake -DEPROSIMA_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX ..
+  # make -j$(nproc)
+  # make install
   # popd
+
+  local INSTALL_PATH="$CURRENT_PATH/../third_party/"
+  if [[ "${ARCH}" == "x86_64" ]]; then
+    PKG_NAME="fast-rtps-1.5.0-1.prebuilt.x86_64.tar.gz"
+  else # aarch64
+    PKG_NAME="fast-rtps-1.5.0-1.prebuilt.aarch64.tar.gz"
+  fi
+  DOWNLOAD_LINK="https://apollo-system.cdn.bcebos.com/archive/6.0/${PKG_NAME}"
+  if [ -e $INSTALL_PATH/$PKG_NAME ]
+  then
+    echo ""
+  else
+    wget -t 10 $DOWNLOAD_LINK -P $INSTALL_PATH
+  fi
+  pushd $INSTALL_PATH
+  tar -zxf ${PKG_NAME}
+  cp -r fast-rtps-1.5.0-1/* ../install
+  rm -rf fast-rtps-1.5.0-1
+  popd
 }
 
 function build_gfamily() {
@@ -215,10 +215,25 @@ function build_flann() {
   popd
 }
 
+function build_vtk() {
+  echo "############### Build vtk. ################"
+  sudo apt install build-essential cmake cmake-curses-gui mesa-common-dev mesa-utils freeglut3-dev ninja-build -y
+
+  local NAME="vtk"
+  download "https://github.com/Kitware/VTK.git" "$NAME"
+  pushd "$CURRENT_PATH/../third_party/$NAME/"
+  mkdir -p build && cd build
+  cmake -GNinja -DCMAKE_PREFIX_PATH=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DBUILD_SHARED_LIBS=ON \
+  -DVTK_ENABLE_WRAPPING=OFF  ..
+  ninja -j$(nproc)
+  ninja install
+  popd
+}
+
 function build_pcl() {
-  # build_flann
+  build_flann
+  build_vtk
   echo "############### Build pcl. ################"
-  # install liblz4
   sudo sudo apt-get install libpng-dev libpcap-dev libusb-1.0-0-dev freeglut3-dev libopenni-dev  -y
 
   local NAME="pcl"
