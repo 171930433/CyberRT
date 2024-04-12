@@ -17,6 +17,7 @@
 #ifndef CYBER_RECORD_FILE_RECORD_FILE_WRITER_H_
 #define CYBER_RECORD_FILE_RECORD_FILE_WRITER_H_
 
+#include <atomic>
 #include <condition_variable>
 #include <fstream>
 #include <memory>
